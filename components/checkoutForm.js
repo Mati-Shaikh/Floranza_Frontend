@@ -39,7 +39,7 @@ export default function CheckoutForm({ total, onClose, cart }) {
             <CheckCircle className="w-16 h-16 text-[#BBA14F] mx-auto mb-4" />
             <h2 className="text-2xl font-bold mb-4">Order Confirmed!</h2>
             <p className="text-gray-400">
-              Thank you for your order. We'll send you a confirmation email shortly.
+              Thank you for your order. Well send you a confirmation email shortly.
             </p>
             <button
               onClick={onClose}

@@ -81,7 +81,7 @@ export default function PerfumeFAQs() {
             Still have questions?
           </h4>
           <p className="text-gray-400 mb-4">
-            Can't find the answer you're looking for? Please reach out to our customer support team.
+            Cant find the answer youre looking for? Please reach out to our customer support team.
           </p>
           <button className="bg-[#BBA14F] text-black px-8 py-3 rounded-full hover:bg-[#d4b85c] transition-colors">
             Contact Support
