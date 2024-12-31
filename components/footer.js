@@ -3,9 +3,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTwitter, faInstagram, faGithub } from '@fortawesome/free-brands-svg-icons';
 
 const footerLinks = [
-  { name: 'Business Services', href: '/test' },
-  { name: 'Tax Services', href: '/tax' },
-  { name: 'Accounting Services', href: '/Train' },
+  { name: 'Perfumes Collection', href: '/test' },
+  { name: 'Blogs and Articles', href: '/tax' },
+  { name: 'FAQs', href: '/Train' },
   { name: 'Contact Us', href: '/contact' }
 ];
 
@@ -39,7 +39,7 @@ export default function Footer() {
             </Link>
           </div>
           <div className="border-t-4 border-zinc-200 pt-8 text-center">
-            <p className="text-gold">&copy; 2024 UK Accountants. All rights reserved.</p>
+            <p className="text-gold">&copy; 2024 FloranzaFragrances. All rights reserved.</p>
           </div>
         </div>
       </div>
