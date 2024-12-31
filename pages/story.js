@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/footer';
 import Testimonial from '../components/testimonials';
 import Talk from '../components/talk';
+import AboutHero from '../components/aboutHero';
 const Story = () => {
     return (
         <div>
@@ -22,6 +23,7 @@ const Story = () => {
                     
                 </div>
             </div>
+            <AboutHero/>
 <About/>
 <Testimonial/>
 <Talk/>

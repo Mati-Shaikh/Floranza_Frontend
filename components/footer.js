@@ -17,29 +17,29 @@ export default function Footer() {
           <div className="flex space-x-6">
             {footerLinks.map((link) => (
               <Link key={link.name} href={link.href} passHref>
-                <a className="text-gold hover:underline">{link.name}</a>
+                <a className="text-black font-bold hover:underline">{link.name}</a>
               </Link>
             ))}
           </div>
           <div className="flex space-x-6">
             <Link href="https://twitter.com" passHref>
-              <a className="text-gold">
+              <a className="text-black">
                 <FontAwesomeIcon icon={faTwitter} size="lg" />
               </a>
             </Link>
             <Link href="https://instagram.com" passHref>
-              <a className="text-gold">
+              <a className="text-black">
                 <FontAwesomeIcon icon={faInstagram} size="lg" />
               </a>
             </Link>
             <Link href="https://github.com" passHref>
-              <a className="text-gold">
+              <a className="text-black">
                 <FontAwesomeIcon icon={faGithub} size="lg" />
               </a>
             </Link>
           </div>
           <div className="border-t-4 border-zinc-200 pt-8 text-center">
-            <p className="text-gold">&copy; 2024 FloranzaFragrances. All rights reserved.</p>
+            <p className="text-black font-bold">&copy; 2024 FloranzaFragrances. All rights reserved.</p>
           </div>
         </div>
       </div>

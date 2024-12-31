@@ -24,7 +24,6 @@ const perfumes = [
     description: "Rich middle eastern oud with golden amber",
     image: "/perfume2.jpg"
   },
-  // Add more perfumes as needed
 ];
 
 export default function PerfumeShop() {
@@ -33,6 +32,12 @@ export default function PerfumeShop() {
   const [cart, setCart] = useState([]);
   const [showCart, setShowCart] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
+  const [checkoutDetails, setCheckoutDetails] = useState({
+    name: "",
+    email: "",
+    address: "",
+  });
+  const [checkoutSuccess, setCheckoutSuccess] = useState(false);
 
   const addToCart = (perfume) => {
     setCart([...cart, perfume]);
@@ -40,6 +45,20 @@ export default function PerfumeShop() {
 
   const removeFromCart = (id) => {
     setCart(cart.filter(item => item.id !== id));
+  };
+
+  const handleCheckoutChange = (e) => {
+    setCheckoutDetails({
+      ...checkoutDetails,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleCheckoutSubmit = (e) => {
+    e.preventDefault();
+    setCheckoutSuccess(true);
+    setCart([]);
+    setShowCheckout(false);
   };
 
   const totalAmount = cart.reduce((sum, item) => sum + item.price, 0);
@@ -169,6 +188,65 @@ export default function PerfumeShop() {
                 </button>
               </>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Checkout Form */}
+      {showCheckout && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50">
+          <div className="absolute inset-0 md:inset-y-10 md:inset-x-20 bg-[#1e1e1e] p-6 rounded-lg">
+            <h2 className="text-2xl font-bold mb-6">Checkout</h2>
+            {checkoutSuccess ? (
+              <p className="text-green-500">Thank you for your purchase!</p>
+            ) : (
+              <form onSubmit={handleCheckoutSubmit} className="space-y-4">
+                <div>
+                  <label className="block mb-2 text-sm">Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={checkoutDetails.name}
+                    onChange={handleCheckoutChange}
+                    required
+                    className="w-full bg-[#2a2a2a] border border-[#BBA14F] py-3 px-4 rounded-md focus:ring-[#BBA14F]"
+                  />
+                </div>
+                <div>
+                  <label className="block mb-2 text-sm">Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={checkoutDetails.email}
+                    onChange={handleCheckoutChange}
+                    required
+                    className="w-full bg-[#2a2a2a] border border-[#BBA14F] py-3 px-4 rounded-md focus:ring-[#BBA14F]"
+                  />
+                </div>
+                <div>
+                  <label className="block mb-2 text-sm">Address</label>
+                  <textarea
+                    name="address"
+                    value={checkoutDetails.address}
+                    onChange={handleCheckoutChange}
+                    required
+                    className="w-full bg-[#2a2a2a] border border-[#BBA14F] py-3 px-4 rounded-md focus:ring-[#BBA14F]"
+                  ></textarea>
+                </div>
+                <button
+                  type="submit"
+                  className="w-full bg-[#BBA14F] text-black py-3 rounded-full hover:bg-[#a08a3d] transition-colors"
+                >
+                  Submit Order
+                </button>
+              </form>
+            )}
+            <button
+              onClick={() => setShowCheckout(false)}
+              className="absolute top-4 right-4 text-white"
+            >
+              <X className="w-6 h-6" />
+            </button>
           </div>
         </div>
       )}

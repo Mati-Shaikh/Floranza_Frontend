@@ -58,7 +58,7 @@ const StatisticsSection = () => {
     <div className="w-full bg-black py-16 px-4">
       {/* Featured Section */}
       <div className="max-w-6xl mx-auto mb-16">
-        <h2 className="text-amber-400 text-6xl font-light mb-4">Featured</h2>
+        <h2 className="text-[#BBA14F] text-6xl font-bold mb-4">Featured</h2>
         <h1 className="text-white text-5xl font-bold mb-4">The Perfection</h1>
         <p className="text-gray-400 max-w-2xl">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.
