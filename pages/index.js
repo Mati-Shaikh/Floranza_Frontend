@@ -10,6 +10,7 @@ import Testimonials from '../components/testimonials';
 import Talk from '../components/talk';
 import Services from '../components/services';
 import AnimatedHero from '../components/hero';
+import PerfumePromoSection from '../components/promotion';
 
 
 
@@ -19,6 +20,9 @@ export default function Home() {
       
       <Navbar />
       <AnimatedHero />
+      <PerfumePromoSection/>
+     
+
       <About />
       {/* <Course/>
       <GetIn/> */}

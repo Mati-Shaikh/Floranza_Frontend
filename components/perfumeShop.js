@@ -32,12 +32,27 @@ export default function PerfumeShop() {
   const [cart, setCart] = useState([]);
   const [showCart, setShowCart] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
+
   const [checkoutDetails, setCheckoutDetails] = useState({
     name: "",
     email: "",
     address: "",
   });
   const [checkoutSuccess, setCheckoutSuccess] = useState(false);
+  const [subCategories, setSubCategories] = useState([]);
+
+  const handleCategoryChange = (category) => {
+    setPriceFilter(category);
+
+    // Update subcategories based on selected category
+    if (category === 'Men') {
+      setSubCategories(['Winter Specialist', 'Summer', 'Autumn', 'Business', 'Party']);
+    } else if (category === 'Women') {
+      setSubCategories(['Marriage', 'Luxury', 'Winter Specialist', 'Summer', 'Party']);
+    } else {
+      setSubCategories([]); // Reset if "All" or no specific category is selected
+    }
+  };
 
   const addToCart = (perfume) => {
     setCart([...cart, perfume]);
@@ -85,29 +100,42 @@ export default function PerfumeShop() {
 
       {/* Search and Filter Section */}
       <div className="container mx-auto py-8 px-4">
-        <div className="flex flex-col md:flex-row gap-4 items-center">
-          <div className="relative flex-1">
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search perfumes..."
-              className="w-full bg-[#2a2a2a] border border-[#BBA14F] rounded-full py-3 px-12 focus:outline-none focus:ring-2 focus:ring-[#BBA14F]"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-          <select
-            className="bg-[#2a2a2a] border border-[#BBA14F] rounded-full py-3 px-6 focus:outline-none focus:ring-2 focus:ring-[#BBA14F]"
-            value={priceFilter}
-            onChange={(e) => setPriceFilter(e.target.value)}
-          >
-            <option value="all">All Prices</option>
-            <option value="under100">Under $100</option>
-            <option value="100to200">$100 - $200</option>
-            <option value="over200">Over $200</option>
-          </select>
+      <div className="flex flex-col md:flex-row gap-4 items-center">
+        <div className="relative flex-1">
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+          <input
+            type="text"
+            placeholder="Search perfumes..."
+            className="w-full bg-[#2a2a2a] border border-[#BBA14F] rounded-full py-3 px-12 focus:outline-none focus:ring-2 focus:ring-[#BBA14F]"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
         </div>
+        <select
+          className="bg-[#2a2a2a] border border-[#BBA14F] rounded-full py-3 px-6 focus:outline-none focus:ring-2 focus:ring-[#BBA14F]"
+          value={priceFilter}
+          onChange={(e) => handleCategoryChange(e.target.value)}
+        >
+          <option value="all">Categories</option>
+          <option value="Men">Men</option>
+          <option value="Women">Women</option>
+        </select>
       </div>
+
+      {/* Subcategories Section */}
+      {subCategories.length > 0 && (
+        <div className="mt-4 flex flex-wrap gap-4">
+          {subCategories.map((subCategory, index) => (
+            <div
+              key={index}
+              className="bg-[#2a2a2a] border border-[#BBA14F] rounded-full py-2 px-4 text-[#BBA14F] cursor-pointer hover:bg-[#BBA14F] hover:text-black transition"
+            >
+              {subCategory}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
 
       {/* Products Grid */}
       <div className="container mx-auto px-4 py-8">
