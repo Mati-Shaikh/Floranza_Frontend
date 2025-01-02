@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Filter, ShoppingCart, X } from 'lucide-react';
+import { Search, Filter, Star, ShoppingCart, X } from 'lucide-react';
 
 // Sample perfume data
 const perfumes = [
@@ -7,24 +7,136 @@ const perfumes = [
     id: 1,
     name: "Midnight Rose",
     price: 129.99,
-    description: "A seductive blend of dark roses and vanilla",
+    description: "A seductive blend of Damascus rose, vanilla, and amber",
+    rating: 4.8,
+    reviews: 256,
+    category: 'women',
+    events: ['wedding', 'party', 'date'],
     image: "/perfume2.jpg"
   },
   {
     id: 2,
     name: "Ocean Breeze",
     price: 89.99,
-    description: "Fresh aquatic notes with a hint of citrus",
+    description: "Fresh aquatic notes with cedar and citrus undertones",
+    rating: 4.7,
+    reviews: 189,
+    category: 'men',
+    events: ['summer', 'party', 'business'],
     image: "/perfume2.jpg"
   },
   {
     id: 3,
     name: "Golden Oud",
     price: 199.99,
-    description: "Rich middle eastern oud with golden amber",
+    description: "Rich middle eastern oud with golden amber and wood notes",
+    rating: 4.9,
+    reviews: 324,
+    category: 'luxury',
+    events: ['wedding', 'luxury', 'winter'],
+    image: "/perfume2.jpg"
+  },
+  {
+    id: 4,
+    name: "Midnight Rose",
+    price: 129.99,
+    description: "A seductive blend of Damascus rose, vanilla, and amber",
+    rating: 4.8,
+    reviews: 256,
+    category: 'women',
+    events: ['wedding', 'party', 'date'],
+    image: "/perfume2.jpg"
+  },
+  {
+    id: 5,
+    name: "Ocean Breeze",
+    price: 89.99,
+    description: "Fresh aquatic notes with cedar and citrus undertones",
+    rating: 4.7,
+    reviews: 189,
+    category: 'men',
+    events: ['summer', 'party', 'business'],
+    image: "/perfume2.jpg"
+  },
+  {
+    id: 6,
+    name: "Golden Oud",
+    price: 199.99,
+    description: "Rich middle eastern oud with golden amber and wood notes",
+    rating: 4.9,
+    reviews: 324,
+    category: 'luxury',
+    events: ['wedding', 'luxury', 'winter'],
+    image: "/perfume2.jpg"
+  },
+  {
+    id: 7,
+    name: "Midnight Rose",
+    price: 129.99,
+    description: "A seductive blend of Damascus rose, vanilla, and amber",
+    rating: 4.8,
+    reviews: 256,
+    category: 'women',
+    events: ['wedding', 'party', 'date'],
+    image: "/perfume2.jpg"
+  },
+  {
+    id: 8,
+    name: "Ocean Breeze",
+    price: 89.99,
+    description: "Fresh aquatic notes with cedar and citrus undertones",
+    rating: 4.7,
+    reviews: 189,
+    category: 'men',
+    events: ['summer', 'party', 'business'],
+    image: "/perfume2.jpg"
+  },
+  {
+    id: 9,
+    name: "Golden Oud",
+    price: 199.99,
+    description: "Rich middle eastern oud with golden amber and wood notes",
+    rating: 4.9,
+    reviews: 324,
+    category: 'luxury',
+    events: ['wedding', 'luxury', 'winter'],
+    image: "/perfume2.jpg"
+  },
+  {
+    id: 10,
+    name: "Midnight Rose",
+    price: 129.99,
+    description: "A seductive blend of Damascus rose, vanilla, and amber",
+    rating: 4.8,
+    reviews: 256,
+    category: 'women',
+    events: ['wedding', 'party', 'date'],
+    image: "/perfume2.jpg"
+  },
+  {
+    id: 11,
+    name: "Ocean Breeze",
+    price: 89.99,
+    description: "Fresh aquatic notes with cedar and citrus undertones",
+    rating: 4.7,
+    reviews: 189,
+    category: 'men',
+    events: ['summer', 'party', 'business'],
+    image: "/perfume2.jpg"
+  },
+  {
+    id: 12,
+    name: "Golden Oud",
+    price: 199.99,
+    description: "Rich middle eastern oud with golden amber and wood notes",
+    rating: 4.9,
+    reviews: 324,
+    category: 'luxury',
+    events: ['wedding', 'luxury', 'winter'],
     image: "/perfume2.jpg"
   },
 ];
+
 
 export default function PerfumeShop() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -153,6 +265,21 @@ export default function PerfumeShop() {
               <div className="p-4">
                 <h3 className="text-xl font-semibold">{perfume.name}</h3>
                 <p className="text-gray-400 mt-2">{perfume.description}</p>
+                <div className="flex items-center mt-2 text-[#BBA14F]">
+                  <Star className="w-4 h-4 fill-current" />
+                  <span className="ml-1">{perfume.rating}</span>
+                  <span className="text-gray-400 text-sm ml-2">({perfume.reviews} reviews)</span>
+                </div>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {perfume.events.map((event, index) => (
+                    <span 
+                      key={index}
+                      className="text-xs bg-[#1e1e1e] text-[#BBA14F] px-2 py-1 rounded-full"
+                    >
+                      {event}
+                    </span>
+                  ))}
+                </div>
                 <div className="flex justify-between items-center mt-4">
                   <span className="text-[#BBA14F] font-bold">${perfume.price}</span>
                   <button
