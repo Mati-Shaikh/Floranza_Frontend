@@ -1,149 +1,16 @@
-import React, { useState } from 'react';
-import { Search, Filter, Star, ShoppingCart, X } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Search, Filter, ShoppingCart, X } from 'lucide-react';
+import axios from 'axios';
 
-// Sample perfume data
-const perfumes = [
-  {
-    id: 1,
-    name: "Midnight Rose",
-    price: 129.99,
-    description: "A seductive blend of Damascus rose, vanilla, and amber",
-    rating: 4.8,
-    reviews: 256,
-    category: 'women',
-    events: ['wedding', 'party', 'date'],
-    image: "/perfume2.jpg"
-  },
-  {
-    id: 2,
-    name: "Ocean Breeze",
-    price: 89.99,
-    description: "Fresh aquatic notes with cedar and citrus undertones",
-    rating: 4.7,
-    reviews: 189,
-    category: 'men',
-    events: ['summer', 'party', 'business'],
-    image: "/perfume2.jpg"
-  },
-  {
-    id: 3,
-    name: "Golden Oud",
-    price: 199.99,
-    description: "Rich middle eastern oud with golden amber and wood notes",
-    rating: 4.9,
-    reviews: 324,
-    category: 'luxury',
-    events: ['wedding', 'luxury', 'winter'],
-    image: "/perfume2.jpg"
-  },
-  {
-    id: 4,
-    name: "Midnight Rose",
-    price: 129.99,
-    description: "A seductive blend of Damascus rose, vanilla, and amber",
-    rating: 4.8,
-    reviews: 256,
-    category: 'women',
-    events: ['wedding', 'party', 'date'],
-    image: "/perfume2.jpg"
-  },
-  {
-    id: 5,
-    name: "Ocean Breeze",
-    price: 89.99,
-    description: "Fresh aquatic notes with cedar and citrus undertones",
-    rating: 4.7,
-    reviews: 189,
-    category: 'men',
-    events: ['summer', 'party', 'business'],
-    image: "/perfume2.jpg"
-  },
-  {
-    id: 6,
-    name: "Golden Oud",
-    price: 199.99,
-    description: "Rich middle eastern oud with golden amber and wood notes",
-    rating: 4.9,
-    reviews: 324,
-    category: 'luxury',
-    events: ['wedding', 'luxury', 'winter'],
-    image: "/perfume2.jpg"
-  },
-  {
-    id: 7,
-    name: "Midnight Rose",
-    price: 129.99,
-    description: "A seductive blend of Damascus rose, vanilla, and amber",
-    rating: 4.8,
-    reviews: 256,
-    category: 'women',
-    events: ['wedding', 'party', 'date'],
-    image: "/perfume2.jpg"
-  },
-  {
-    id: 8,
-    name: "Ocean Breeze",
-    price: 89.99,
-    description: "Fresh aquatic notes with cedar and citrus undertones",
-    rating: 4.7,
-    reviews: 189,
-    category: 'men',
-    events: ['summer', 'party', 'business'],
-    image: "/perfume2.jpg"
-  },
-  {
-    id: 9,
-    name: "Golden Oud",
-    price: 199.99,
-    description: "Rich middle eastern oud with golden amber and wood notes",
-    rating: 4.9,
-    reviews: 324,
-    category: 'luxury',
-    events: ['wedding', 'luxury', 'winter'],
-    image: "/perfume2.jpg"
-  },
-  {
-    id: 10,
-    name: "Midnight Rose",
-    price: 129.99,
-    description: "A seductive blend of Damascus rose, vanilla, and amber",
-    rating: 4.8,
-    reviews: 256,
-    category: 'women',
-    events: ['wedding', 'party', 'date'],
-    image: "/perfume2.jpg"
-  },
-  {
-    id: 11,
-    name: "Ocean Breeze",
-    price: 89.99,
-    description: "Fresh aquatic notes with cedar and citrus undertones",
-    rating: 4.7,
-    reviews: 189,
-    category: 'men',
-    events: ['summer', 'party', 'business'],
-    image: "/perfume2.jpg"
-  },
-  {
-    id: 12,
-    name: "Golden Oud",
-    price: 199.99,
-    description: "Rich middle eastern oud with golden amber and wood notes",
-    rating: 4.9,
-    reviews: 324,
-    category: 'luxury',
-    events: ['wedding', 'luxury', 'winter'],
-    image: "/perfume2.jpg"
-  },
-];
-
-
-export default function PerfumeShop() {
+const PerfumeShop = () => {
+  const [perfumes, setPerfumes] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [priceFilter, setPriceFilter] = useState("all");
   const [cart, setCart] = useState([]);
   const [showCart, setShowCart] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
+  const [filteredPerfumes, setFilteredPerfumes] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const [checkoutDetails, setCheckoutDetails] = useState({
     name: "",
@@ -151,27 +18,54 @@ export default function PerfumeShop() {
     address: "",
   });
   const [checkoutSuccess, setCheckoutSuccess] = useState(false);
-  const [subCategories, setSubCategories] = useState([]);
 
-  const handleCategoryChange = (category) => {
-    setPriceFilter(category);
+  // Fetch perfumes from API
+  useEffect(() => {
+    const fetchPerfumes = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/perfumes');
+        setPerfumes(response.data);
+        setFilteredPerfumes(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching perfumes:', error);
+        setLoading(false);
+      }
+    };
+    fetchPerfumes();
+  }, []);
 
-    // Update subcategories based on selected category
-    if (category === 'Men') {
-      setSubCategories(['Winter Specialist', 'Summer', 'Autumn', 'Business', 'Party']);
-    } else if (category === 'Women') {
-      setSubCategories(['Marriage', 'Luxury', 'Winter Specialist', 'Summer', 'Party']);
-    } else {
-      setSubCategories([]); // Reset if "All" or no specific category is selected
+  // Search and filter functionality
+  useEffect(() => {
+    let filtered = perfumes;
+
+    // Search filter
+    if (searchQuery) {
+      filtered = filtered.filter(perfume =>
+        perfume.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        perfume.description.toLowerCase().includes(searchQuery.toLowerCase())
+      );
     }
-  };
+
+    // Price filter
+    if (priceFilter !== "all") {
+      filtered = filtered.filter(perfume => {
+        if (priceFilter === "low") return perfume.price <= 1000;
+        if (priceFilter === "medium") return perfume.price > 1000 && perfume.price <= 5000;
+        if (priceFilter === "high") return perfume.price > 5000;
+        return true;
+      });
+    }
+
+    setFilteredPerfumes(filtered);
+  }, [searchQuery, priceFilter, perfumes]);
 
   const addToCart = (perfume) => {
     setCart([...cart, perfume]);
   };
 
   const removeFromCart = (id) => {
-    setCart(cart.filter(item => item.id !== id));
+    setCart(cart.filter(item => item._id !== id));
   };
 
   const handleCheckoutChange = (e) => {
@@ -181,14 +75,28 @@ export default function PerfumeShop() {
     });
   };
 
-  const handleCheckoutSubmit = (e) => {
+  const handleCheckoutSubmit = async (e) => {
     e.preventDefault();
+    // Add your order submission logic here
     setCheckoutSuccess(true);
     setCart([]);
     setShowCheckout(false);
   };
 
   const totalAmount = cart.reduce((sum, item) => sum + item.price, 0);
+
+  // Function to get image URL
+  const getImageUrl = (imagePath) => {
+    return `http://localhost:5000/${imagePath.split('uploads\\')[1]}`;
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#1e1e1e] text-white flex items-center justify-center">
+        <div className="text-xl">Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#1e1e1e] text-white">
@@ -212,89 +120,61 @@ export default function PerfumeShop() {
 
       {/* Search and Filter Section */}
       <div className="container mx-auto py-8 px-4">
-      <div className="flex flex-col md:flex-row gap-4 items-center">
-        <div className="relative flex-1">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search perfumes..."
-            className="w-full bg-[#2a2a2a] border border-[#BBA14F] rounded-full py-3 px-12 focus:outline-none focus:ring-2 focus:ring-[#BBA14F]"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
+        <div className="flex flex-col md:flex-row gap-4 items-center">
+          <div className="relative flex-1">
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search perfumes..."
+              className="w-full bg-[#2a2a2a] border border-[#BBA14F] rounded-full py-3 px-12 focus:outline-none focus:ring-2 focus:ring-[#BBA14F]"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+          <select
+            className="bg-[#2a2a2a] border border-[#BBA14F] rounded-full py-3 px-6 focus:outline-none focus:ring-2 focus:ring-[#BBA14F]"
+            value={priceFilter}
+            onChange={(e) => setPriceFilter(e.target.value)}
+          >
+            <option value="all">All Prices</option>
+            <option value="low">Under $1000</option>
+            <option value="medium">$1000 - $5000</option>
+            <option value="high">Above $5000</option>
+          </select>
         </div>
-        <select
-          className="bg-[#2a2a2a] border border-[#BBA14F] rounded-full py-3 px-6 focus:outline-none focus:ring-2 focus:ring-[#BBA14F]"
-          value={priceFilter}
-          onChange={(e) => handleCategoryChange(e.target.value)}
-        >
-          <option value="all">Categories</option>
-          <option value="Men">Men</option>
-          <option value="Women">Women</option>
-        </select>
       </div>
 
-      {/* Subcategories Section */}
-      {subCategories.length > 0 && (
-        <div className="mt-4 flex flex-wrap gap-4">
-          {subCategories.map((subCategory, index) => (
-            <div
-              key={index}
-              className="bg-[#2a2a2a] border border-[#BBA14F] rounded-full py-2 px-4 text-[#BBA14F] cursor-pointer hover:bg-[#BBA14F] hover:text-black transition"
-            >
-              {subCategory}
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-
-      {/* Products Grid */}
-      <div className="container mx-auto px-4 py-8">
+     {/* Products Grid */}
+     <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {perfumes.map((perfume) => (
+          {filteredPerfumes.map((perfume) => (
             <div 
-              key={perfume.id}
+              key={perfume._id}
               className="bg-[#2a2a2a] rounded-lg overflow-hidden border border-[#BBA14F] hover:shadow-lg transition-shadow"
             >
               <img
-                src={perfume.image}
+                src={getImageUrl(perfume.image)}
                 alt={perfume.name}
                 className="w-full h-48 object-cover"
               />
               <div className="p-4">
                 <h3 className="text-xl font-semibold">{perfume.name}</h3>
                 <p className="text-gray-400 mt-2">{perfume.description}</p>
-                <div className="flex items-center mt-2 text-[#BBA14F]">
-                  <Star className="w-4 h-4 fill-current" />
-                  <span className="ml-1">{perfume.rating}</span>
-                  <span className="text-gray-400 text-sm ml-2">({perfume.reviews} reviews)</span>
-                </div>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {perfume.events.map((event, index) => (
-                    <span 
-                      key={index}
-                      className="text-xs bg-[#1e1e1e] text-[#BBA14F] px-2 py-1 rounded-full"
-                    >
-                      {event}
-                    </span>
-                  ))}
-                </div>
                 <div className="flex justify-between items-center mt-4">
                   <span className="text-[#BBA14F] font-bold">${perfume.price}</span>
-                  <button
-                    onClick={() => addToCart(perfume)}
-                    className="bg-[#BBA14F] text-black px-4 py-2 rounded-full hover:bg-[#a08a3d] transition-colors"
-                  >
-                    Add to Cart
-                  </button>
+                  <span className="text-gray-400">Stock: {perfume.stock}</span>
                 </div>
+                <button
+                  onClick={() => addToCart(perfume)}
+                  className="w-full mt-4 bg-[#BBA14F] text-black px-4 py-2 rounded-full hover:bg-[#a08a3d] transition-colors"
+                >
+                  Add to Cart
+                </button>
               </div>
             </div>
           ))}
         </div>
       </div>
-
       {/* Cart Sidebar */}
       {showCart && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50">
@@ -312,13 +192,13 @@ export default function PerfumeShop() {
               <>
                 <div className="space-y-4 mb-6">
                   {cart.map((item) => (
-                    <div key={item.id} className="flex justify-between items-center">
+                    <div key={item._id} className="flex justify-between items-center">
                       <div>
                         <h3 className="font-semibold">{item.name}</h3>
                         <p className="text-[#BBA14F]">${item.price}</p>
                       </div>
                       <button
-                        onClick={() => removeFromCart(item.id)}
+                        onClick={() => removeFromCart(item._id)}
                         className="text-red-500 hover:text-red-700"
                       >
                         <X className="w-5 h-5" />
@@ -407,4 +287,6 @@ export default function PerfumeShop() {
       )}
     </div>
   );
-}
+};
+
+export default PerfumeShop;

@@ -64,7 +64,7 @@ const PerfumePromoSection = () => {
       {/* Hero Section with Sale Banner */}
       <div className="relative h-96 overflow-hidden">
         <img 
-          src="/perfume2.jpg" 
+          src="/perfume2.jpg " 
           alt="Luxury Perfumes" 
           className="w-full h-full object-cover"
         />
