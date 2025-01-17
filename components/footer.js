@@ -6,7 +6,8 @@ const footerLinks = [
   { name: 'Perfumes Collection', href: '/test' },
   { name: 'Blogs and Articles', href: '/tax' },
   { name: 'FAQs', href: '/Train' },
-  { name: 'Contact Us', href: '/contact' }
+  { name: 'Contact Us', href: '/contact' },
+  { name: 'Admin', href: '/adminKey' }
 ];
 
 export default function Footer() {
