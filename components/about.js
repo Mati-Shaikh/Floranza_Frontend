@@ -103,7 +103,7 @@ const StatisticsSection = () => {
       </div>
       
       {/* Statistics Counter */}
-      <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      {/* <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
         {stats.map((stat, index) => (
           <div key={index} className="flex flex-col items-center">
             {shouldAnimate && <AnimatedCounter end={stat.value} />}
@@ -111,7 +111,7 @@ const StatisticsSection = () => {
             <span className="text-gray-400 mt-2">{stat.label}</span>
           </div>
         ))}
-      </div>
+      </div> */}
       <BenefitsSection/>
     </div>
   );
