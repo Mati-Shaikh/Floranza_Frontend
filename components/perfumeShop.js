@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Filter, ShoppingCart, X } from 'lucide-react';
+import { Search, Filter, ShoppingCart, X,Minus,Plus } from 'lucide-react';
 import axios from 'axios';
 import { toast } from 'react-hot-toast'; // Add toast for notifications
 
@@ -89,20 +89,7 @@ const PerfumeShop = () => {
     setFilteredPerfumes(filtered);
   }, [searchQuery, priceFilter, perfumes]);
 
-  const addToCart = (perfume) => {
-    const existingItem = cart.find(item => item._id === perfume._id);
-    if (existingItem) {
-      toast.error('Item already in cart');
-      return;
-    }
-    setCart([...cart, perfume]);
-    toast.success('Added to cart');
-  };
-
-  const removeFromCart = (id) => {
-    setCart(cart.filter(item => item._id !== id));
-    toast.success('Removed from cart');
-  };
+ 
 
   const handleCheckoutChange = (e) => {
     setCheckoutDetails({
@@ -180,7 +167,39 @@ const PerfumeShop = () => {
   };
   
 
-  const totalAmount = cart.reduce((sum, item) => sum + item.price, 0);
+  const addToCart = (perfume) => {
+    const existingItem = cart.find(item => item._id === perfume._id);
+    if (existingItem) {
+      // If item exists, increment quantity
+      setCart(cart.map(item => 
+        item._id === perfume._id 
+          ? {...item, quantity: (item.quantity || 1) + 1} 
+          : item
+      ));
+    } else {
+      // If new item, add with quantity 1
+      setCart([...cart, {...perfume, quantity: 1}]);
+    }
+    toast.success('Added to cart');
+  };
+
+  const removeFromCart = (id) => {
+    setCart(cart.filter(item => item._id !== id));
+    toast.success('Removed from cart');
+  };
+
+  const updateQuantity = (id, change) => {
+    setCart(cart.map(item => {
+      if (item._id === id) {
+        const newQuantity = (item.quantity || 1) + change;
+        return newQuantity > 0 ? {...item, quantity: newQuantity} : item;
+      }
+      return item;
+    }).filter(item => item.quantity > 0));
+  };
+
+  const totalAmount = cart.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0);
+
 
   if (loading) {
     return (
@@ -295,15 +314,31 @@ const PerfumeShop = () => {
                 <div className="space-y-4 mb-6">
                   {cart.map((item) => (
                     <div key={item._id} className="flex justify-between items-center">
-                      <div>
+                      <div className="flex-1">
                         <h3 className="font-semibold">{item.name}</h3>
                         <p className="text-[#BBA14F]">${item.price}</p>
                       </div>
+                      <div className="flex items-center space-x-2">
+                        <button 
+                          onClick={() => updateQuantity(item._id, -1)}
+                          className="bg-[#2a2a2a] p-1 rounded"
+                        >
+                          <Minus className="w-4 h-4" />
+                        </button>
+                        <span>{item.quantity || 1}</span>
+                        <button 
+                          onClick={() => updateQuantity(item._id, 1)}
+                          className="bg-[#2a2a2a] p-1 rounded"
+                        >
+                          <Plus className="w-4 h-4" />
+                        </button>
+                      </div>
                       <button
                         onClick={() => removeFromCart(item._id)}
-                        className="text-red-500 hover:text-red-700"
+                        className="text-red-500 hover:text-red-700 ml-2"
                       >
                         <X className="w-5 h-5" />
+                    
                       </button>
                     </div>
                   ))}
@@ -331,92 +366,117 @@ const PerfumeShop = () => {
 
       {/* Checkout Form */}
       {showCheckout && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50">
-          <div className="absolute inset-0 md:inset-y-10 md:inset-x-20 bg-[#1e1e1e] p-6 rounded-lg">
-            <div className="relative max-w-2xl mx-auto">
-              <button
-                onClick={() => setShowCheckout(false)}
-                className="absolute top-4 right-4 text-gray-400 hover:text-white"
-              >
-                <X className="w-6 h-6" />
-              </button>
+  <div className="fixed inset-0 bg-black bg-opacity-50 z-50">
+    <div className="absolute inset-0 md:inset-y-10 md:inset-x-20 bg-[#1e1e1e] p-6 rounded-lg">
+      <div className="relative max-w-2xl mx-auto">
+        <button
+          onClick={() => setShowCheckout(false)}
+          className="absolute top-4 right-4 text-gray-400 hover:text-white"
+        >
+          <X className="w-6 h-6" />
+        </button>
 
-              <h2 className="text-2xl font-bold mb-6">Checkout</h2>
+        <h2 className="text-2xl font-bold mb-6">Checkout</h2>
 
-              {checkoutSuccess ? (
-                <div className="text-center py-8">
-                  <p className="text-green-500 text-xl mb-4">Thank you for your purchase!</p>
-                  <p className="text-gray-400">Your order has been placed successfully.</p>
-                </div>
-              ) : (
-                <form onSubmit={handleCheckoutSubmit} className="space-y-4">
-                  <div>
-                    <label className="block mb-2 text-sm">Name</label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={checkoutDetails.name}
-                      onChange={handleCheckoutChange}
-                      required
-                      className="w-full bg-[#2a2a2a] border border-[#BBA14F] py-3 px-4 rounded-md focus:ring-[#BBA14F]"
-                    />
-                  </div>
-                  <div>
-                    <label className="block mb-2 text-sm">Email</label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={checkoutDetails.email}
-                      onChange={handleCheckoutChange}
-                      required
-                      className="w-full bg-[#2a2a2a] border border-[#BBA14F] py-3 px-4 rounded-md focus:ring-[#BBA14F]"
-                    />
-                  </div>
-                  <div>
-                    <label className="block mb-2 text-sm">Address</label>
-                    <textarea
-                      name="address"
-                      value={checkoutDetails.address}
-                      onChange={handleCheckoutChange}
-                      required
-                      className="w-full bg-[#2a2a2a] border border-[#BBA14F] py-3 px-4 rounded-md focus:ring-[#BBA14F]"
-                      rows="3"
-                    ></textarea>
-                  </div>
-                  <div className="mt-6">
-                    <h3 className="font-semibold mb-3">Order Summary (Cash On Delivery)</h3>
-                    <div className="space-y-2">
-                      {cart.map((item) => (
-                        <div key={item._id} className="flex justify-between text-sm">
-                          <span>{item.name}</span>
-                          <span>${item.price.toFixed(2)}</span>
-                        </div>
-                      ))}
-                      <div className="border-t border-[#BBA14F] pt-2 mt-2">
-                        <div className="flex justify-between font-bold">
-                          <span>Total</span>
-                          <span>${totalAmount.toFixed(2)}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <button
-                    type="submit"
-                    disabled={orderProcessing}
-                    className={`w-full py-3 rounded-full transition-colors ${
-                      orderProcessing
-                        ? 'bg-gray-500 cursor-not-allowed'
-                        : 'bg-[#BBA14F] text-black hover:bg-[#a08a3d]'
-                    }`}
-                  >
-                    {orderProcessing ? 'Processing...' : 'Submit Order'}
-                  </button>
-                </form>
-              )}
-            </div>
+        {checkoutSuccess ? (
+          <div className="text-center py-8">
+            <p className="text-green-500 text-xl mb-4">
+              Order Confirmed Successfully!
+            </p>
+            <p className="text-gray-400">Thank you for shopping with us!</p>
+            <p className="text-gray-500">The page will refresh shortly...</p>
           </div>
-        </div>
-      )}
+        ) : (
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              setOrderProcessing(true);
+
+              setTimeout(() => {
+                setOrderProcessing(false);
+                setCheckoutSuccess(true);
+
+                // Close modal and refresh page after 3 seconds
+                setTimeout(() => {
+                  setShowCheckout(false);
+                  setCheckoutSuccess(false);
+                  window.location.reload(); // Refreshes the page
+                }, 3000);
+              }, 2000); // Simulating order processing delay
+            }}
+            className="space-y-4"
+          >
+            <div>
+              <label className="block mb-2 text-sm">Name</label>
+              <input
+                type="text"
+                name="name"
+                value={checkoutDetails.name}
+                onChange={handleCheckoutChange}
+                required
+                className="w-full bg-[#2a2a2a] border border-[#BBA14F] py-3 px-4 rounded-md focus:ring-[#BBA14F]"
+              />
+            </div>
+            <div>
+              <label className="block mb-2 text-sm">Email</label>
+              <input
+                type="email"
+                name="email"
+                value={checkoutDetails.email}
+                onChange={handleCheckoutChange}
+                required
+                className="w-full bg-[#2a2a2a] border border-[#BBA14F] py-3 px-4 rounded-md focus:ring-[#BBA14F]"
+              />
+            </div>
+            <div>
+              <label className="block mb-2 text-sm">Address</label>
+              <textarea
+                name="address"
+                value={checkoutDetails.address}
+                onChange={handleCheckoutChange}
+                required
+                className="w-full bg-[#2a2a2a] border border-[#BBA14F] py-3 px-4 rounded-md focus:ring-[#BBA14F]"
+                rows="3"
+              ></textarea>
+            </div>
+            <div className="mt-6">
+              <h3 className="font-semibold mb-3">Order Summary</h3>
+              <div className="space-y-2">
+                {cart.map((item) => (
+                  <div
+                    key={item._id}
+                    className="flex justify-between text-sm"
+                  >
+                    <span>{item.name}</span>
+                    <span>${item.price.toFixed(2)}</span>
+                  </div>
+                ))}
+                <div className="border-t border-[#BBA14F] pt-2 mt-2">
+                  <div className="flex justify-between font-bold">
+                    <span>Total</span>
+                    <span>${totalAmount.toFixed(2)}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button
+              type="submit"
+              disabled={orderProcessing}
+              className={`w-full py-3 rounded-full transition-colors ${
+                orderProcessing
+                  ? "bg-gray-500 cursor-not-allowed"
+                  : "bg-[#BBA14F] text-black hover:bg-[#a08a3d]"
+              }`}
+            >
+              {orderProcessing ? "Processing..." : "Submit Order"}
+            </button>
+          </form>
+        )}
+      </div>
+    </div>
+  </div>
+)}
+
     </div>
   );
 };
