@@ -249,13 +249,6 @@ const AdminDashboard = () => {
                 <tbody className="divide-y divide-gray-800">
                   {perfumes.map((perfume) => (
                     <tr key={perfume._id}>
-                      <td className="px-6 py-4">
-                        <img
-                          src="/api/placeholder/50/50"
-                          alt={perfume.name}
-                          className="h-12 w-12 rounded-full"
-                        />
-                      </td>
                       <td className="px-6 py-4">{perfume.name}</td>
                       <td className="px-6 py-4">{perfume.description}</td>
                       <td className="px-6 py-4">${perfume.price}</td>
