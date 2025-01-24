@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import Footer from '../components/footer';
+import linkURL from '../components/linkURL';
 
 const AdminDashboard = () => {
   const [perfumes, setPerfumes] = useState([]);
@@ -24,7 +25,7 @@ const AdminDashboard = () => {
   // Fetch perfumes
   const fetchPerfumes = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/perfumes');
+      const response = await fetch(`${linkURL}/api/perfumes`);
       const data = await response.json();
       setPerfumes(data);
       updateDashboardStats(data, orders);
@@ -36,7 +37,7 @@ const AdminDashboard = () => {
   // Fetch orders
   const fetchOrders = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/orders');
+      const response = await fetch(`${linkURL}/api/orders`);
       const data = await response.json();
       setOrders(data);
       updateDashboardStats(perfumes, data);
@@ -103,7 +104,7 @@ const AdminDashboard = () => {
     });
 
     try {
-      const response = await fetch('http://localhost:5000/api/perfumes', {
+      const response = await fetch(`${linkURL}/api/perfumes`, {
         method: 'POST',
         body: formDataToSend,
       });
@@ -121,7 +122,7 @@ const AdminDashboard = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this perfume?')) {
       try {
-        const response = await fetch(`http://localhost:5000/api/perfumes/${id}`, {
+        const response = await fetch(`${linkURL}/api/perfumes/${id}`, {
           method: 'DELETE'
         });
         if (response.ok) {

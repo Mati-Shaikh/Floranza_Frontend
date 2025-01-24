@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Filter, ShoppingCart, X,Minus,Plus } from 'lucide-react';
 import axios from 'axios';
-import { toast } from 'react-hot-toast'; // Add toast for notifications
+import { toast } from 'react-hot-toast';
+import linkURL from './linkURL';
 
 const PerfumeShop = () => {
   const [perfumes, setPerfumes] = useState([]);
@@ -42,14 +43,14 @@ const PerfumeShop = () => {
     if (!imagePath) return '';
     const filename = imagePath.split('uploads\\').pop() || imagePath.split('uploads/').pop();
     if (!filename) return '';
-    return `http://localhost:5000/uploads/${filename}`;
+    return `${linkURL}/uploads/${filename}`;
   };
 
   // Fetch perfumes from API
   useEffect(() => {
     const fetchPerfumes = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/perfumes');
+       const response = await axios.get(`${linkURL}/api/perfumes`);
         const perfumesWithValidImages = response.data.map(perfume => ({
           ...perfume,
           imageUrl: getImageUrl(perfume.image)
@@ -130,17 +131,16 @@ const PerfumeShop = () => {
         return;
       }
   
-      // Place orders for each item in cart
       const orderPromises = cart.map((item) =>
-        axios.post('http://localhost:5000/api/orders', {
+        axios.post(`${linkURL}/api/orders`, {
           customerName: checkoutDetails.name,
           customerEmail: checkoutDetails.email,
           perfumeId: item._id,
-          paymentStatus: 'Pending',
+          paymentStatus: 'CashOnDelivery',
         })
       );
-  
-      await Promise.all(orderPromises);
+      
+      const orderResponses = await Promise.all(orderPromises);
   
       // Handle success
       setCheckoutSuccess(true);
@@ -462,6 +462,7 @@ const PerfumeShop = () => {
             <button
               type="submit"
               disabled={orderProcessing}
+              onClick={handleCheckoutSubmit}
               className={`w-full py-3 rounded-full transition-colors ${
                 orderProcessing
                   ? "bg-gray-500 cursor-not-allowed"
