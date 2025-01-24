@@ -239,7 +239,7 @@ const AdminDashboard = () => {
               <table className="min-w-full divide-y divide-gray-800">
                 <thead className="bg-gray-800">
                   <tr>
-                    {['Image', 'Name', 'Description', 'Price', 'Stock', 'Actions'].map((header) => (
+                    {['Name', 'Description', 'Price', 'Stock', 'Actions'].map((header) => (
                       <th key={header} className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                         {header}
                       </th>
