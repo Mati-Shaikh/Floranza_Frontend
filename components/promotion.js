@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Star, UserCircle2, Crown, Briefcase, Sparkles, ShoppingBag, Heart, Store } from 'lucide-react';
+import { useRouter } from 'next/router'; // Import the useRouter hook
 
 const PerfumePromoSection = () => {
+  const router = useRouter();
   const [activeCategory, setActiveCategory] = useState('all');
   const [activeEvent, setActiveEvent] = useState('all');
 
@@ -26,36 +28,36 @@ const PerfumePromoSection = () => {
   const bestSellers = [
     {
       id: 1,
-      name: 'Midnight Rose',
+      name: 'Floral Crown',
       description: 'A seductive blend of Damascus rose, vanilla, and amber',
-      price: 129.99,
+      price: 5000,
       rating: 4.8,
       reviews: 256,
       category: 'women',
       events: ['wedding', 'party', 'date'],
-      image: '/perfume2.jpg'
+      image: '/2.jpeg'
     },
     {
       id: 2,
-      name: 'Ocean Breeze',
+      name: 'Ruby Seduction',
       description: 'Fresh aquatic notes with cedar and citrus undertones',
-      price: 99.99,
+      price: 4500,
       rating: 4.7,
       reviews: 189,
       category: 'men',
       events: ['summer', 'date', 'party'],
-      image: '/perfume2.jpg'
+      image: '/3.jpeg'
     },
     {
       id: 3,
-      name: 'Executive Suite',
+      name: 'Spicewave',
       description: 'Sophisticated leather and wood notes with a hint of spice',
-      price: 149.99,
+      price: 3349.99,
       rating: 4.9,
       reviews: 324,
       category: 'business',
       events: ['business', 'winter'],
-      image: '/perfume2.jpg'
+      image: '/4.jpeg'
     }
   ];
 
@@ -157,12 +159,15 @@ const PerfumePromoSection = () => {
                     ))}
                   </div>
                 </div>
-                <button className="w-full py-3 bg-[#BBA14F] text-black rounded-md font-semibold
+                <button
+      className="w-full py-3 bg-[#BBA14F] text-black rounded-md font-semibold
                   hover:bg-[#9A844A] transition-all duration-300 ease-in-out
-                  flex items-center justify-center gap-2">
-                  <ShoppingBag className="w-5 h-5" />
-                  Add to Cart
-                </button>
+                  flex items-center justify-center gap-2"
+      onClick={() => router.push('/test')} // Add navigation to '/test'
+    >
+      <ShoppingBag className="w-5 h-5" />
+      Go to Perfume Section
+    </button>
               </div>
             </div>
           ))}

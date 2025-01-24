@@ -14,12 +14,16 @@ const PerfumeShop = () => {
   const [loading, setLoading] = useState(true);
   const [orderProcessing, setOrderProcessing] = useState(false);
 
+ 
+  const [checkoutSuccess, setCheckoutSuccess] = useState(false);
+  
+
   const [checkoutDetails, setCheckoutDetails] = useState({
     name: "",
     email: "",
     address: "",
   });
-  const [checkoutSuccess, setCheckoutSuccess] = useState(false);
+
 
   // Load cart from localStorage on initial render
   useEffect(() => {
@@ -110,43 +114,71 @@ const PerfumeShop = () => {
   const handleCheckoutSubmit = async (e) => {
     e.preventDefault();
     setOrderProcessing(true);
-
+  
     try {
+      // Send email with order summary using Web3Forms
+      const formData = new FormData();
+      formData.append('access_key', '5b3f21ca-8959-4103-8f86-0ec1f3eeab25'); // Web3Forms API Key
+      formData.append('name', checkoutDetails.name);
+      formData.append('email', checkoutDetails.email);
+      formData.append(
+        'message',
+        `Order Summary: 
+        ${cart.map((item) => `${item.name} - $${item.price.toFixed(2)}`).join(', ')}
+        Total: $${totalAmount.toFixed(2)}
+        Address: ${checkoutDetails.address}`
+      );
+  
+      const emailResponse = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData,
+      });
+  
+      const emailData = await emailResponse.json();
+  
+      if (!emailData.success) {
+        console.error('Error sending email:', emailData);
+        toast.error('Failed to send confirmation email.');
+        setOrderProcessing(false);
+        return;
+      }
+  
       // Place orders for each item in cart
-      const orderPromises = cart.map(item => {
-        return axios.post('http://localhost:5000/api/orders', {
+      const orderPromises = cart.map((item) =>
+        axios.post('http://localhost:5000/api/orders', {
           customerName: checkoutDetails.name,
           customerEmail: checkoutDetails.email,
           perfumeId: item._id,
-          paymentStatus: "Pending"
-        });
-      });
-
+          paymentStatus: 'Pending',
+        })
+      );
+  
       await Promise.all(orderPromises);
-      
+  
+      // Handle success
       setCheckoutSuccess(true);
       setCart([]);
       localStorage.removeItem('perfumeCart');
-      toast.success('Order placed successfully!');
-      
+      toast.success('Order placed and email confirmation sent successfully!');
+  
       // Reset form and close modal after short delay
       setTimeout(() => {
         setCheckoutSuccess(false);
         setShowCheckout(false);
         setCheckoutDetails({
-          name: "",
-          email: "",
-          address: ""
+          name: '',
+          email: '',
+          address: '',
         });
       }, 2000);
-
     } catch (error) {
-      console.error('Error placing order:', error);
+      console.error('Error during checkout:', error);
       toast.error('Failed to place order. Please try again.');
     } finally {
       setOrderProcessing(false);
     }
   };
+  
 
   const totalAmount = cart.reduce((sum, item) => sum + item.price, 0);
 
@@ -308,9 +340,9 @@ const PerfumeShop = () => {
               >
                 <X className="w-6 h-6" />
               </button>
-              
+
               <h2 className="text-2xl font-bold mb-6">Checkout</h2>
-              
+
               {checkoutSuccess ? (
                 <div className="text-center py-8">
                   <p className="text-green-500 text-xl mb-4">Thank you for your purchase!</p>
@@ -352,7 +384,7 @@ const PerfumeShop = () => {
                     ></textarea>
                   </div>
                   <div className="mt-6">
-                    <h3 className="font-semibold mb-3">Order Summary</h3>
+                    <h3 className="font-semibold mb-3">Order Summary (Cash On Delivery)</h3>
                     <div className="space-y-2">
                       {cart.map((item) => (
                         <div key={item._id} className="flex justify-between text-sm">

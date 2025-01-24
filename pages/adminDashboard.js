@@ -58,19 +58,28 @@ const AdminDashboard = () => {
     });
   };
 
-  // Prepare chart data
   const prepareRevenueData = () => {
-    const revenueByDate = orders.reduce((acc, order) => {
+    if (!Array.isArray(orders)) {
+      console.error('Orders is not an array:', orders);
+      return [];
+    }
+  
+    // Step 1: Reduce orders into revenueByDate
+    const preRevenue = orders.reduce((acc, order) => {
       const date = new Date(order.createdAt).toLocaleDateString();
       acc[date] = (acc[date] || 0) + (order.perfumeId?.price || 0);
       return acc;
     }, {});
-
-    return Object.entries(revenueByDate).map(([date, revenue]) => ({
+  
+    console.log('PreRevenue (Intermediate Revenue by Date):', preRevenue);
+  
+    // Step 2: Map revenueByDate into an array of objects
+    return Object.entries(preRevenue).map(([date, revenue]) => ({
       date,
-      revenue
+      revenue,
     }));
   };
+  
 
   const prepareProductData = () => {
     return perfumes.map(perfume => ({
@@ -267,45 +276,54 @@ const AdminDashboard = () => {
           </div>
         )}
 
-        {/* Orders Table */}
-        {activeTab === 'orders' && (
-          <div className="mt-8">
-            <div className="bg-gray-900 rounded-lg overflow-hidden">
-              <table className="min-w-full divide-y divide-gray-800">
-                <thead className="bg-gray-800">
-                  <tr>
-                    {['Customer Name', 'Email', 'Perfume', 'Payment Status', 'Order Date'].map((header) => (
-                      <th key={header} className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                        {header}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-800">
-                  {orders.map((order) => (
-                    <tr key={order._id}>
-                      <td className="px-6 py-4">{order.customerName}</td>
-                      <td className="px-6 py-4">{order.customerEmail}</td>
-                      <td className="px-6 py-4">{order.perfumeId.name}</td>
-                      <td className="px-6 py-4">
-                        <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                          order.paymentStatus === 'Paid'
-                            ? 'bg-green-900 text-green-200'
-                            : 'bg-yellow-900 text-yellow-200'
-                        }`}>
-                          {order.paymentStatus}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4">
-                        {new Date(order.createdAt).toLocaleDateString()}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
+      {/* Orders Table */}
+{activeTab === 'orders' && (
+  <div className="mt-8">
+    <div className="bg-gray-900 rounded-lg overflow-hidden">
+      <table className="min-w-full divide-y divide-gray-800">
+        <thead className="bg-gray-800">
+          <tr>
+            {['Customer Name', 'Email', 'Perfume', 'Payment Status', 'Order Date'].map((header) => (
+              <th
+                key={header}
+                className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
+              >
+                {header}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-gray-800">
+          {orders.map((order) => (
+            <tr key={order._id}>
+              <td className="px-6 py-4">{order.customerName}</td>
+              <td className="px-6 py-4">{order.customerEmail}</td>
+              <td className="px-6 py-4">
+                {order.perfumeId?.name || 'N/A'}
+              </td>
+              <td className="px-6 py-4">
+                <span
+                  className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                    order.paymentStatus === 'Paid'
+                      ? 'bg-green-900 text-green-200'
+                      : 'bg-yellow-900 text-yellow-200'
+                  }`}
+                >
+                  {order.paymentStatus}
+                </span>
+              </td>
+              <td className="px-6 py-4">
+                {new Date(order.createdAt).toLocaleDateString()}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+)}
+
+   
 
         {/* Add Perfume Modal */}
         {isModalOpen && (

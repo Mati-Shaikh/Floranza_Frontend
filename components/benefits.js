@@ -33,7 +33,6 @@ const BenefitCard = ({ icon, title, description }) => {
     </div>
   );
 };
-
 const BenefitsSection = () => {
   const benefits = [
     {
@@ -42,8 +41,13 @@ const BenefitsSection = () => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       ),
-      title: 'Quick Payment',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit Ut elit tellus.'
+      title: 'Fragrance Quality',
+      description: 'Experience premium-quality fragrances crafted with the finest ingredients.',
+      details: [
+        'Long-lasting scents for all-day freshness.',
+        'Carefully curated with natural ingredients.',
+        'Perfect for all occasions, from casual to formal.'
+      ]
     },
     {
       icon: (
@@ -51,8 +55,13 @@ const BenefitsSection = () => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       ),
-      title: 'Affordable Prices',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit Ut elit tellus.'
+      title: 'Wide Variety',
+      description: 'Discover an extensive collection of perfumes to suit your style.',
+      details: [
+        'Floral, woody, citrus, and more fragrance families.',
+        'Unisex options for versatile use.',
+        'Seasonal and signature collections available.'
+      ]
     },
     {
       icon: (
@@ -60,8 +69,13 @@ const BenefitsSection = () => {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       ),
-      title: 'Big Deals',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit Ut elit tellus.'
+      title: 'Unique Experiences',
+      description: 'Each fragrance tells a story, making your scent truly one-of-a-kind.',
+      details: [
+        'Crafted by renowned perfumers worldwide.',
+        'Customized options for personalized scents.',
+        'Encapsulates emotions and memories in every bottle.'
+      ]
     }
   ];
 
@@ -79,6 +93,7 @@ const BenefitsSection = () => {
             icon={benefit.icon}
             title={benefit.title}
             description={benefit.description}
+            details={benefit.details}
           />
         ))}
       </div>

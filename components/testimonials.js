@@ -14,13 +14,13 @@ const testimonials = [
     quote: "Fantastic service and support. Highly recommend!",
     name: "Jane Smith",
     title: "CTO, Another Corp",
-    image: "/image1.jpg"
+    image: "/image.jpg"
   },
   {
     quote: "High quality and great customer service.",
     name: "Sam Wilson",
     title: "Manager, Some Company",
-    image: "/image2.jpg"
+    image: "/image.jpg"
   }
 ];
 
