@@ -35,11 +35,7 @@ export default function Contact() {
             <h3 className="text-6xl font-bold text-[#BBA14F] font-montessori">Contact Us Form</h3>
             <h2 className="text-7xl font-bold text-white">Get In Touch !!</h2>
             <p className="text-gray-400 text-lg max-w-xl">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-              sed do eiusmod tempor incididunt ut labore et dolore 
-              magna aliqua. Ut enim ad minim veniam, quis nostrud 
-              exercitation ullamco laboris nisi ut aliquip ex ea 
-              commodo consequat.
+            Frances brings you the finest order processing experience, ensuring seamless management of your product needs. With a focus on efficiency and reliability, we strive to simplify your shopping journey while delivering quality at every step. Experience a smooth, hassle-free process tailored to your satisfaction
             </p>
           </div>
         </div>

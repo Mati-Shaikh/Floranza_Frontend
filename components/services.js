@@ -28,9 +28,7 @@ export default function PerfumeSection() {
           <div className="flex flex-col justify-center space-y-6 p-6">
             <h3 className="text-4xl font-bold text-white">Our<br />Product</h3>
             <p className="text-gray-400">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do 
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim 
-              veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea.
+            Frances brings you the finest order processing experience, ensuring seamless management of your product needs. With a focus on efficiency and reliability, we strive to simplify your shopping journey while delivering quality at every step. Experience a smooth, hassle-free process tailored to your satisfaction
             </p>
             <button className="text-white border-2 border-white rounded-full px-8 py-3 w-fit hover:bg-white hover:text-black transition-colors duration-300">
               Learn More
