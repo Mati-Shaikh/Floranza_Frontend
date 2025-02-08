@@ -41,10 +41,20 @@ const PerfumeShop = () => {
 
   const getImageUrl = (imagePath) => {
     if (!imagePath) return '';
-    const filename = imagePath.split('uploads\\').pop() || imagePath.split('uploads/').pop();
-    if (!filename) return '';
+  
+    // Normalize slashes for consistency
+    const normalizedPath = imagePath.replace(/\\/g, '/');
+  
+    // Extract filename from the end of the path
+    const filename = normalizedPath.split('/').pop();
+    
+    console.log("Extracted File name:", filename);
+    
+    if (!filename || filename.includes('opt/render/project/src/uploads/')) return '';
+  
     return `${linkURL}/uploads/${filename}`;
   };
+  
 
   // Fetch perfumes from API
   useEffect(() => {
@@ -54,7 +64,9 @@ const PerfumeShop = () => {
         const perfumesWithValidImages = response.data.map(perfume => ({
           ...perfume,
           imageUrl: getImageUrl(perfume.image)
+          
         }));
+        //console.log("Perfume Image", imageUrl);
         setPerfumes(perfumesWithValidImages);
         setFilteredPerfumes(perfumesWithValidImages);
         setLoading(false);

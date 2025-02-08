@@ -1,4 +1,4 @@
 
-const linkURL = 'http://localhost:5000';
+const linkURL = 'https://floranza-backend.onrender.com';
 
 export default linkURL;
