@@ -233,21 +233,26 @@ const PerfumeShop = () => {
     <div className="min-h-screen bg-[#1e1e1e] text-white">
       {/* Header Section */}
       <header className="py-6 px-4 border-b border-[#BBA14F]">
-        <div className="container mx-auto flex justify-between items-center">
-          <h1 className="text-3xl text-[#BBA14f] font-bold">Luxury Perfumes</h1>
-          <button 
-            onClick={() => setShowCart(true)}
-            className="relative p-2"
-          >
-            <ShoppingCart className="w-6 h-6 text-[#BBA14F]" />
-            {cart.length > 0 && (
-              <span className="absolute -top-1 -right-1 bg-[#BBA14F] text-black rounded-full w-5 h-5 flex items-center justify-center text-xs">
-                {cart.length}
-              </span>
-            )}
-          </button>
-        </div>
-      </header>
+  <div className="container mx-auto flex justify-between items-center">
+    <h1 className="text-3xl text-[#BBA14F] font-bold">Luxury Perfumes</h1>
+  </div>
+</header>
+
+{/* Fixed Cart Button */}
+<button 
+  onClick={() => setShowCart(true)}
+  className="fixed bottom-6 right-6 bg-[#BBA14F] text-black p-4 rounded-full shadow-lg hover:bg-[#a08a3d] transition-all"
+>
+  <div className="relative">
+    <ShoppingCart className="w-8 h-8" />
+    {cart.length > 0 && (
+      <span className="absolute -top-2 -right-2 bg-black text-white rounded-full w-6 h-6 flex items-center justify-center text-xs">
+        {cart.length}
+      </span>
+    )}
+  </div>
+</button>
+
 
       {/* Search and Filter Section */}
       <div className="container mx-auto py-8 px-4">
