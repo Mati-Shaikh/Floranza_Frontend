@@ -13,15 +13,18 @@ const footerLinks = [
 export default function Footer() {
   return (
     <footer className="bg-[#BBA14F] shadow-sm">
-      <div className="max-w-7xl mx-auto px-8 lg:px-12 py-8">
-        <div className="flex flex-col items-center justify-center space-y-4">
-          <div className="flex space-x-6">
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 py-8">
+        <div className="flex flex-col items-center space-y-6">
+          {/* Links Section */}
+          <div className="flex flex-wrap justify-center gap-4 text-center">
             {footerLinks.map((link) => (
               <Link key={link.name} href={link.href} passHref>
-                <a className="text-black font-bold hover:underline">{link.name}</a>
+                <a className="text-black font-bold hover:underline whitespace-nowrap">{link.name}</a>
               </Link>
             ))}
           </div>
+
+          {/* Social Icons */}
           <div className="flex space-x-6">
             <Link href="https://twitter.com" passHref>
               <a className="text-black">
@@ -39,7 +42,9 @@ export default function Footer() {
               </a>
             </Link>
           </div>
-          <div className="border-t-4 border-zinc-200 pt-8 text-center">
+
+          {/* Copyright Section */}
+          <div className="border-t-2 border-zinc-200 pt-4 text-center w-full">
             <p className="text-black font-bold">&copy; 2024 FloranzaFragrances. All rights reserved.</p>
           </div>
         </div>

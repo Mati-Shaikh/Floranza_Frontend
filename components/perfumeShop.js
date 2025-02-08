@@ -60,13 +60,12 @@ const PerfumeShop = () => {
   useEffect(() => {
     const fetchPerfumes = async () => {
       try {
-       const response = await axios.get(`${linkURL}/api/perfumes`);
+        const response = await axios.get(`${linkURL}/api/perfumes`);
         const perfumesWithValidImages = response.data.map(perfume => ({
           ...perfume,
-          imageUrl: getImageUrl(perfume.image)
-          
+          imageUrl: getImageUrl(perfume.image),
         }));
-        //console.log("Perfume Image", imageUrl);
+  
         setPerfumes(perfumesWithValidImages);
         setFilteredPerfumes(perfumesWithValidImages);
         setLoading(false);
@@ -76,8 +75,17 @@ const PerfumeShop = () => {
         toast.error('Failed to fetch perfumes');
       }
     };
+  
+    // Initial fetch
     fetchPerfumes();
+  
+    // Set interval to refetch every 10 minutes
+    const interval = setInterval(fetchPerfumes, 600000); // 600,000 ms = 10 minutes
+  
+    // Cleanup function to clear interval when component unmounts
+    return () => clearInterval(interval);
   }, []);
+  
 
   // Search and filter functionality
   useEffect(() => {
