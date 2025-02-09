@@ -50,7 +50,7 @@ export default function CheckoutForm({ total, onClose, cart }) {
           </div>
         ) : (
           <>
-            <h2 className="text-2xl font-bold mb-6">Checkout</h2>
+            <h2 className="text-2xl font-bold mb-6">Checkoutzzz</h2>
             
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-4">

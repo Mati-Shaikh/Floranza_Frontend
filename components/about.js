@@ -77,10 +77,7 @@ const StatisticsSection = () => {
             </div>
             <h3 className="text-white text-xl font-bold mb-2">Free Shipping</h3>
             <p className="text-gray-400">Free shipping ensures a seamless shopping experience, allowing customers to enjoy their purchases without any additional delivery costs.</p>
-            <a href="#" className="text-amber-400 mt-4 flex items-center hover:text-amber-300 transition-colors">
-              Learn More
-              <span className="ml-2">→</span>
-            </a>
+           
           </div>
         </div>
         
@@ -94,10 +91,6 @@ const StatisticsSection = () => {
             </div>
             <h3 className="text-white text-xl font-bold mb-2">24/7 Support</h3>
             <p className="text-gray-400">We are Available 24/7 you can order any perfume from our Collection.</p>
-            <a href="#" className="text-amber-400 mt-4 flex items-center hover:text-amber-300 transition-colors">
-              Learn More
-              <span className="ml-2">→</span>
-            </a>
           </div>
         </div>
       </div>

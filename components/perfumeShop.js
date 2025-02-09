@@ -22,6 +22,7 @@ const PerfumeShop = () => {
   const [checkoutDetails, setCheckoutDetails] = useState({
     name: "",
     email: "",
+    phone: '',
     address: "",
   });
 
@@ -118,7 +119,6 @@ const PerfumeShop = () => {
       [e.target.name]: e.target.value,
     });
   };
-
   const handleCheckoutSubmit = async (e) => {
     e.preventDefault();
     setOrderProcessing(true);
@@ -129,12 +129,14 @@ const PerfumeShop = () => {
       formData.append('access_key', '5b3f21ca-8959-4103-8f86-0ec1f3eeab25'); // Web3Forms API Key
       formData.append('name', checkoutDetails.name);
       formData.append('email', checkoutDetails.email);
+      formData.append('phone', checkoutDetails.phone); // Adding phone number
       formData.append(
         'message',
         `Order Summary: 
         ${cart.map((item) => `${item.name} - $${item.price.toFixed(2)}`).join(', ')}
         Total: $${totalAmount.toFixed(2)}
-        Address: ${checkoutDetails.address}`
+        Address: ${checkoutDetails.address}
+        Phone: ${checkoutDetails.phone}` // Include phone number in email message
       );
   
       const emailResponse = await fetch('https://api.web3forms.com/submit', {
@@ -155,11 +157,12 @@ const PerfumeShop = () => {
         axios.post(`${linkURL}/api/orders`, {
           customerName: checkoutDetails.name,
           customerEmail: checkoutDetails.email,
+          customerPhone: checkoutDetails.phone, // Adding phone number to order data
           perfumeId: item._id,
           paymentStatus: 'CashOnDelivery',
         })
       );
-      
+  
       const orderResponses = await Promise.all(orderPromises);
   
       // Handle success
@@ -175,6 +178,7 @@ const PerfumeShop = () => {
         setCheckoutDetails({
           name: '',
           email: '',
+          phone: '', // Reset phone number field
           address: '',
         });
       }, 2000);
@@ -185,6 +189,7 @@ const PerfumeShop = () => {
       setOrderProcessing(false);
     }
   };
+  
   
 
   const addToCart = (perfume) => {
@@ -413,90 +418,112 @@ const PerfumeShop = () => {
           </div>
         ) : (
           <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              setOrderProcessing(true);
-
+          onSubmit={(e) => {
+            e.preventDefault();
+            setOrderProcessing(true);
+        
+            setTimeout(() => {
+              setOrderProcessing(false);
+              setCheckoutSuccess(true);
+        
+              // Close modal and refresh page after 3 seconds
               setTimeout(() => {
-                setOrderProcessing(false);
-                setCheckoutSuccess(true);
-
-                // Close modal and refresh page after 3 seconds
-                setTimeout(() => {
-                  setShowCheckout(false);
-                  setCheckoutSuccess(false);
-                  window.location.reload(); // Refreshes the page
-                }, 3000);
-              }, 2000); // Simulating order processing delay
-            }}
-            className="space-y-4"
-          >
-            <div>
-              <label className="block mb-2 text-sm">Name</label>
-              <input
-                type="text"
-                name="name"
-                value={checkoutDetails.name}
-                onChange={handleCheckoutChange}
-                required
-                className="w-full bg-[#2a2a2a] border border-[#BBA14F] py-3 px-4 rounded-md focus:ring-[#BBA14F]"
-              />
-            </div>
-            <div>
-              <label className="block mb-2 text-sm">Email</label>
-              <input
-                type="email"
-                name="email"
-                value={checkoutDetails.email}
-                onChange={handleCheckoutChange}
-                required
-                className="w-full bg-[#2a2a2a] border border-[#BBA14F] py-3 px-4 rounded-md focus:ring-[#BBA14F]"
-              />
-            </div>
-            <div>
-              <label className="block mb-2 text-sm">Address</label>
-              <textarea
-                name="address"
-                value={checkoutDetails.address}
-                onChange={handleCheckoutChange}
-                required
-                className="w-full bg-[#2a2a2a] border border-[#BBA14F] py-3 px-4 rounded-md focus:ring-[#BBA14F]"
-                rows="3"
-              ></textarea>
-            </div>
-            <div className="mt-6">
-              <h3 className="font-semibold mb-3">Order Summary</h3>
-              <div className="space-y-2">
-                {cart.map((item) => (
-                  <div
-                    key={item._id}
-                    className="flex justify-between text-sm"
-                  >
-                    <span>{item.name}</span>
-                    <span>${item.price.toFixed(2)}</span>
-                  </div>
-                ))}
-                <div className="border-t border-[#BBA14F] pt-2 mt-2">
-                  <div className="flex justify-between font-bold">
-                    <span>Total</span>
-                    <span>${totalAmount.toFixed(2)}</span>
-                  </div>
+                setShowCheckout(false);
+                setCheckoutSuccess(false);
+                window.location.reload(); // Refreshes the page
+              }, 3000);
+            }, 2000); // Simulating order processing delay
+          }}
+          className="space-y-4 p-4 max-w-md mx-auto"
+        >
+          <div>
+            <label className="block mb-2 text-sm">Name</label>
+            <input
+              type="text"
+              name="name"
+              value={checkoutDetails.name}
+              onChange={handleCheckoutChange}
+              required
+              className="w-full bg-[#2a2a2a] border border-[#BBA14F] py-2 px-3 rounded-md focus:ring-[#BBA14F]"
+            />
+          </div>
+          <div>
+            <label className="block mb-2 text-sm">Phone Number</label>
+            <input
+              type="tel"
+              name="phone"
+              value={checkoutDetails.phone}
+              onChange={handleCheckoutChange}
+              required
+              className="w-full bg-[#2a2a2a] border border-[#BBA14F] py-2 px-3 rounded-md focus:ring-[#BBA14F]"
+            />
+          </div>
+          <div>
+            <label className="block mb-2 text-sm">Email</label>
+            <input
+              type="email"
+              name="email"
+              value={checkoutDetails.email}
+              onChange={handleCheckoutChange}
+              required
+              className="w-full bg-[#2a2a2a] border border-[#BBA14F] py-2 px-3 rounded-md focus:ring-[#BBA14F]"
+            />
+          </div>
+          <div>
+            <label className="block mb-2 text-sm">Address</label>
+            <textarea
+              name="address"
+              value={checkoutDetails.address}
+              onChange={handleCheckoutChange}
+              required
+              className="w-full bg-[#2a2a2a] border border-[#BBA14F] py-2 px-3 rounded-md focus:ring-[#BBA14F]"
+              rows="3"
+            ></textarea>
+          </div>
+          <div>
+            <label className="block mb-2 text-sm">Payment Method</label>
+            <select
+              name="payment"
+              value={checkoutDetails.payment}
+              onChange={handleCheckoutChange}
+              required
+              className="w-full bg-[#2a2a2a] border border-[#BBA14F] py-2 px-3 rounded-md focus:ring-[#BBA14F]"
+            >
+              <option value="cod">Cash On Delivery</option>
+              <option value="online">Online Payment</option>
+            </select>
+          </div>
+          <div className="mt-6">
+            <h3 className="font-semibold mb-3">Order Summary</h3>
+            <div className="space-y-2">
+              {cart.map((item) => (
+                <div key={item._id} className="flex justify-between text-sm">
+                  <span>{item.name}</span>
+                  <span>${item.price.toFixed(2)}</span>
+                </div>
+              ))}
+              <div className="border-t border-[#BBA14F] pt-2 mt-2">
+                <div className="flex justify-between font-bold">
+                  <span>Total</span>
+                  <span>${totalAmount.toFixed(2)}</span>
                 </div>
               </div>
             </div>
-            <button
-              type="submit"
-              disabled={orderProcessing}
-              onClick={handleCheckoutSubmit}
-              className={`w-full py-3 rounded-full transition-colors ${
-                orderProcessing
-                  ? "bg-gray-500 cursor-not-allowed"
-                  : "bg-[#BBA14F] text-black hover:bg-[#a08a3d]"
-              }`}
-            >
-              {orderProcessing ? "Processing..." : "Submit Order"}
-            </button>
-          </form>
+          </div>
+          <button
+            type="submit"
+            disabled={orderProcessing}
+            onClick={handleCheckoutSubmit}
+            className={`w-full py-3 rounded-full transition-colors ${
+              orderProcessing
+                ? "bg-gray-500 cursor-not-allowed"
+                : "bg-[#BBA14F] text-black hover:bg-[#a08a3d]"
+            }`}
+          >
+            {orderProcessing ? "Processing..." : "Submit Order"}
+          </button>
+        </form>
+        
         )}
       </div>
     </div>
