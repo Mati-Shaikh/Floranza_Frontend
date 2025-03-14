@@ -58,6 +58,39 @@ const PerfumePromoSection = () => {
       category: 'business',
       events: ['business', 'winter'],
       image: '/Oud.png'
+    },
+    {
+      id: 4,
+      name: 'Floral Crown 2',
+      description: 'Sophisticated leather and wood notes with a hint of spice',
+      price: 2449.99,
+      rating: 4.9,
+      reviews: 324,
+      category: 'business',
+      events: ['business', 'winter'],
+      image: '/FC2.png'
+    },
+    {
+      id: 5,
+      name: 'Ruby Seduction',
+      description: 'Sophisticated leather and wood notes with a hint of spice',
+      price: 1979.99,
+      rating: 4.9,
+      reviews: 324,
+      category: 'business',
+      events: ['business', 'winter'],
+      image: '/RS.png'
+    },
+    {
+      id: 6,
+      name: 'Spicewave',
+      description: 'Sophisticated leather and wood notes with a hint of spice',
+      price: 1979.99,
+      rating: 4.9,
+      reviews: 324,
+      category: 'business',
+      events: ['business', 'winter'],
+      image: '/Spicewave.png'
     }
   ];
 
