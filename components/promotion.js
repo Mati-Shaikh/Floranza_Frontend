@@ -30,34 +30,34 @@ const PerfumePromoSection = () => {
       id: 1,
       name: 'Floral Crown',
       description: 'A seductive blend of Damascus rose, vanilla, and amber',
-      price: 5000,
+      price: 2450,
       rating: 4.8,
       reviews: 256,
       category: 'women',
       events: ['wedding', 'party', 'date'],
-      image: '/2.jpeg'
+      image: '/FC.png'
     },
     {
       id: 2,
-      name: 'Ruby Seduction',
+      name: 'Rosalina',
       description: 'Fresh aquatic notes with cedar and citrus undertones',
-      price: 4500,
+      price: 1550,
       rating: 4.7,
       reviews: 189,
       category: 'men',
       events: ['summer', 'date', 'party'],
-      image: '/3.jpeg'
+      image: '/Rosalina.png'
     },
     {
       id: 3,
-      name: 'Spicewave',
+      name: 'Oud Previlage',
       description: 'Sophisticated leather and wood notes with a hint of spice',
-      price: 3349.99,
+      price: 1979.99,
       rating: 4.9,
       reviews: 324,
       category: 'business',
       events: ['business', 'winter'],
-      image: '/4.jpeg'
+      image: '/Oud.png'
     }
   ];
 
