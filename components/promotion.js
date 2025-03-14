@@ -141,7 +141,7 @@ const PerfumePromoSection = () => {
                     {perfume.name}
                   </h3>
                   <p className="text-2xl text-[#BBA14F] font-bold">
-                    ${perfume.price}
+                    RS{perfume.price}
                   </p>
                 </div>
                 <p className="text-gray-400 text-sm mb-4">{perfume.description}</p>
