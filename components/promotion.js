@@ -36,17 +36,6 @@ const PerfumePromoSection = () => {
       category: 'men',
       events: ['summer', 'date', 'party'],
       image: '/Rosalina.png'
-    },
-    {
-      id: 3,
-      name: 'Oud Previlage',
-      description: 'Sophisticated leather and wood notes with a hint of spice',
-      price: 1979.99,
-      rating: 4.9,
-      reviews: 324,
-      category: 'business',
-      events: ['business', 'winter'],
-      image: '/Oud.png'
     }
   ];
 
@@ -232,8 +221,8 @@ const PerfumePromoSection = () => {
 
   return (
     <div className="bg-black min-h-screen">
-      {/* Hero Section with Sale Banner */}
-      <div className="relative h-96 overflow-hidden">
+
+<div className="relative h-96 overflow-hidden">
         <img 
           src="/perfume2.jpg " 
           alt="Luxury Perfumes" 
@@ -254,6 +243,29 @@ const PerfumePromoSection = () => {
           </div>
         </div>
       </div>
+       {renderPerfumeSection('Best Sellers', bestSellers)}
+      {/* Hero Section with Sale Banner */}
+      {/* <div className="relative h-96 overflow-hidden">
+        <img 
+          src="/perfume2.jpg " 
+          alt="Luxury Perfumes" 
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="text-6xl font-bold text-[#BBA14F] mb-4">
+              25% OFF
+            </h1>
+            <p className="text-2xl text-[#BBA14F]">
+              Exclusive Perfume Collection
+            </p>
+            <button className="mt-8 px-8 py-3 bg-[#BBA14F] text-black rounded-full font-semibold 
+              hover:bg-[#9A844A] transition-all duration-300 ease-in-out">
+              Shop Now
+            </button>
+          </div>
+        </div>
+      </div> */}
 
       {/* Categories Section */}
       <div className="max-w-7xl mx-auto py-16 px-4">
@@ -282,13 +294,13 @@ const PerfumePromoSection = () => {
       </div>
 
       {/* Best Sellers Section */}
-      {renderPerfumeSection('Best Sellers', bestSellers)}
+     
 
       {/* New Arrivals Section */}
       {renderPerfumeSection('New Arrivals', newArrivals)}
 
       {/* Our Collection Section */}
-      {renderPerfumeSection('Our Collection', ourCollection)}
+      {/* {renderPerfumeSection('Our Collection', ourCollection)} */}
 
       {/* Rest of the component remains the same */}
       {/* Events Section and Newsletter Section */}
