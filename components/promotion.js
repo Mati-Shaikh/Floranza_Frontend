@@ -5,9 +5,9 @@ import { useRouter } from 'next/router'; // Import the useRouter hook
 const PerfumePromoSection = () => {
   const router = useRouter();
   const [activeCategory, setActiveCategory] = useState('all');
-  const [activeEvent, setActiveEvent] = useState('all');
 
   const categories = [
+    { id: 'all', name: 'All', icon: Store },
     { id: 'men', name: 'Men', icon: UserCircle2 },
     { id: 'women', name: 'Women', icon: Crown },
     { id: 'business', name: 'Business', icon: Briefcase },
@@ -22,9 +22,9 @@ const PerfumePromoSection = () => {
       price: 2450,
       rating: 4.8,
       reviews: 256,
-      category: 'women',
+      category: ['women', 'luxury', 'business'], // Updated categories
       events: ['wedding', 'party', 'date'],
-      image: '/FC.png'
+      image: '/fi.png'
     },
     {
       id: 2,
@@ -33,25 +33,13 @@ const PerfumePromoSection = () => {
       price: 1550,
       rating: 4.7,
       reviews: 189,
-      category: 'men',
+      category: ['women'], // Updated categories
       events: ['summer', 'date', 'party'],
-      image: '/Rosalina.png'
+      image: '/ro.png'
     }
   ];
 
   const newArrivals = [
-   
-    {
-      id: 2,
-      name: 'Rosalina',
-      description: 'Fresh aquatic notes with cedar and citrus undertones',
-      price: 1550,
-      rating: 4.7,
-      reviews: 189,
-      category: 'men',
-      events: ['summer', 'date', 'party'],
-      image: '/Rosalina.png'
-    },
     {
       id: 3,
       name: 'Oud Previlage',
@@ -59,9 +47,9 @@ const PerfumePromoSection = () => {
       price: 1979.99,
       rating: 4.9,
       reviews: 324,
-      category: 'business',
+      category: ['men', 'luxury'], // Updated categories
       events: ['business', 'winter'],
-      image: '/Oud.png'
+      image: '/ou.png'
     },
     {
       id: 5,
@@ -70,9 +58,9 @@ const PerfumePromoSection = () => {
       price: 1759.99,
       rating: 4.9,
       reviews: 324,
-      category: 'business',
+      category: ['women'], // Updated categories
       events: ['business', 'winter'],
-      image: '/RS.png'
+      image: '/ruby.png'
     },
     {
       id: 6,
@@ -81,80 +69,18 @@ const PerfumePromoSection = () => {
       price: 1849.99,
       rating: 4.9,
       reviews: 324,
-      category: 'business',
+      category: ['men'], // Updated categories
       events: ['business', 'winter'],
-      image: '/Spicewave.png'
+      image: '/spi.png'
     }
   ];
 
-  const ourCollection = [
-    {
-      id: 1,
-      name: 'Floral Crown',
-      description: 'A seductive blend of Damascus rose, vanilla, and amber',
-      price: 2450,
-      rating: 4.8,
-      reviews: 256,
-      category: 'women',
-      events: ['wedding', 'party', 'date'],
-      image: '/FC.png'
-    },
-    {
-      id: 2,
-      name: 'Rosalina',
-      description: 'Fresh aquatic notes with cedar and citrus undertones',
-      price: 1550,
-      rating: 4.7,
-      reviews: 189,
-      category: 'men',
-      events: ['summer', 'date', 'party'],
-      image: '/Rosalina.png'
-    },
-    {
-      id: 3,
-      name: 'Oud Previlage',
-      description: 'Sophisticated leather and wood notes with a hint of spice',
-      price: 1979.99,
-      rating: 4.9,
-      reviews: 324,
-      category: 'business',
-      events: ['business', 'winter'],
-      image: '/Oud.png'
-    },
-    {
-      id: 4,
-      name: 'Floral Crown 2',
-      description: 'Sophisticated leather and wood notes with a hint of spice',
-      price: 2449.99,
-      rating: 4.9,
-      reviews: 324,
-      category: 'business',
-      events: ['business', 'winter'],
-      image: '/FC2.png'
-    },
-    {
-      id: 5,
-      name: 'Ruby Seduction',
-      description: 'Sophisticated leather and wood notes with a hint of spice',
-      price: 1759.99,
-      rating: 4.9,
-      reviews: 324,
-      category: 'business',
-      events: ['business', 'winter'],
-      image: '/RS.png'
-    },
-    {
-      id: 6,
-      name: 'Spicewave',
-      description: 'Sophisticated leather and wood notes with a hint of spice',
-      price: 1849.99,
-      rating: 4.9,
-      reviews: 324,
-      category: 'business',
-      events: ['business', 'winter'],
-      image: '/Spicewave.png'
-    }
-  ];
+  const allPerfumes = [...bestSellers, ...newArrivals];
+
+  const filterItems = (items, category) => {
+    if (category === 'all') return items;
+    return items.filter(item => item.category.includes(category));
+  };
 
   const renderPerfumeSection = (title, perfumes) => (
     <div className="max-w-7xl mx-auto py-16 px-4">
@@ -219,10 +145,12 @@ const PerfumePromoSection = () => {
     </div>
   );
 
+  const filteredPerfumes = filterItems(allPerfumes, activeCategory);
+
   return (
     <div className="bg-black min-h-screen">
-
-<div className="relative h-96 overflow-hidden">
+      {/* Hero Section */}
+      <div className="relative h-96 overflow-hidden">
         <img 
           src="/perfume2.jpg " 
           alt="Luxury Perfumes" 
@@ -243,68 +171,39 @@ const PerfumePromoSection = () => {
           </div>
         </div>
       </div>
-       {renderPerfumeSection('Best Sellers', bestSellers)}
-      {/* Hero Section with Sale Banner */}
-      {/* <div className="relative h-96 overflow-hidden">
-        <img 
-          src="/perfume2.jpg " 
-          alt="Luxury Perfumes" 
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="text-center">
-            <h1 className="text-6xl font-bold text-[#BBA14F] mb-4">
-              25% OFF
-            </h1>
-            <p className="text-2xl text-[#BBA14F]">
-              Exclusive Perfume Collection
-            </p>
-            <button className="mt-8 px-8 py-3 bg-[#BBA14F] text-black rounded-full font-semibold 
-              hover:bg-[#9A844A] transition-all duration-300 ease-in-out">
-              Shop Now
-            </button>
-          </div>
-        </div>
-      </div> */}
 
-      {/* Categories Section */}
-      <div className="max-w-7xl mx-auto py-16 px-4">
-        <h2 className="text-3xl font-bold text-[#BBA14F] mb-8 text-center">
-          Shop By Category
-        </h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {categories.map((category) => {
-            const IconComponent = category.icon;
-            return (
-              <div
-                key={category.id}
-                className={`bg-gray-900 rounded-lg p-6 text-center cursor-pointer 
-                  hover:bg-gray-800 transition-all duration-300 ease-in-out
-                  ${activeCategory === category.id ? 'ring-2 ring-[#BBA14F]' : ''}`}
-                onClick={() => setActiveCategory(category.id)}
-              >
-                <div className="flex justify-center mb-4">
-                  <IconComponent className="w-12 h-12 text-[#BBA14F]" />
-                </div>
-                <h3 className="text-[#BBA14F] font-semibold">{category.name}</h3>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+      {/* Category Filters Section */}
+      <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
+  <h2 className="text-2xl sm:text-3xl font-bold text-[#BBA14F] mb-6 sm:mb-8 text-center">
+    Shop By Category
+  </h2>
+  <div className="flex flex-wrap justify-center gap-4 sm:gap-6 mb-6 sm:mb-8">
+    {categories.map((category) => (
+      <button
+        key={category.id}
+        className={`flex flex-col items-center p-3 sm:p-4 rounded-lg cursor-pointer w-24 sm:w-32 md:w-40
+          ${activeCategory === category.id ? 'bg-[#BBA14F] text-black' : 'bg-gray-900 text-[#BBA14F]'}
+          hover:bg-[#9A844A] transition-all duration-300 ease-in-out`}
+        onClick={() => setActiveCategory(category.id)}
+      >
+        <category.icon className="w-6 h-6 sm:w-8 sm:h-8 mb-1 sm:mb-2" />
+        <span className="text-sm sm:text-base font-semibold">{category.name}</span>
+      </button>
+    ))}
+  </div>
+</div>
+
 
       {/* Best Sellers Section */}
-     
+      {renderPerfumeSection('Best Sellers', bestSellers)}
 
       {/* New Arrivals Section */}
       {renderPerfumeSection('New Arrivals', newArrivals)}
 
-      {/* Our Collection Section */}
-      {/* {renderPerfumeSection('Our Collection', ourCollection)} */}
-
-      {/* Rest of the component remains the same */}
-      {/* Events Section and Newsletter Section */}
-      
+      {/* Filtered Perfumes Section (Dynamic Section) */}
+      {activeCategory !== 'all' && (
+        renderPerfumeSection(`${categories.find(cat => cat.id === activeCategory)?.name} Collection`, filteredPerfumes)
+      )}
     </div>
   );
 };
